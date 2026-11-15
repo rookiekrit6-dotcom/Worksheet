@@ -130,12 +130,36 @@ nav.tabs a{display:inline-flex;align-items:center;gap:7px}
 .wp .q p{margin:0 0 1mm;font-size:14pt;line-height:1.5}
 .wp .work{height:9mm;border-bottom:1px dotted #555;font-size:11pt;color:#555;display:flex;align-items:flex-end}
 .wp .reply{margin-top:4mm;font-size:13pt;text-align:right}
+
+/* guide + policy dialogs, site footer */
+.help-btn{font:inherit;font-size:.85rem;font-weight:600;margin-left:8px;padding:3px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.75);background:transparent;color:#fff;cursor:pointer;white-space:nowrap}
+.help-btn:hover{background:rgba(255,255,255,.16)}
+.site-ft{max-width:1080px;margin:0 auto;padding:4px 16px 40px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;font-size:.9rem;color:var(--ink-soft)}
+.site-ft button,.site-ft a{font:inherit;background:none;border:0;padding:0;color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+dialog.dlg{border:0;border-radius:16px;padding:0;width:100%;max-width:min(640px,calc(100% - 24px));max-height:calc(100% - 32px);background:#fff;color:var(--ink);box-shadow:0 24px 60px -20px rgba(0,0,0,.55)}
+dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
+.dlg .dlg-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff}
+.dlg .dlg-h b{font-size:1.1rem}
+.dlg .dlg-x{font:inherit;font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:6px 14px;cursor:pointer}
+.dlg .dlg-b{padding:6px 18px 22px;font-size:.97rem;line-height:1.65}
+.dlg .dlg-b h3{margin:16px 0 4px;font-size:1rem;color:var(--ink);font-weight:700}
+.dlg .dlg-b p{margin:0 0 8px}
+.dlg .dlg-b ol,.dlg .dlg-b ul{margin:0 0 8px;padding-left:1.3em;display:block}
+.dlg .dlg-b li{margin-bottom:4px}
+.dlg .dlg-b small{color:var(--ink-soft)}
+@media print{.site-ft,dialog.dlg{display:none !important}}
+
+/* clocks */
+.ck{display:grid;grid-template-columns:repeat(3,1fr);gap:6mm 8mm}
+.ck .q{text-align:center;font-size:12.5pt}
+.ck svg{width:44mm;height:44mm;display:block;margin:0 auto 1mm}
+.ck .n{color:#666;font-size:10pt;display:block;text-align:left}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
   <h1><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 30l3-9L27 5l6 6-16 16z" fill="#f6c443"/><path d="M8 30l3-9 6 6z" fill="#f3d9b0"/><path d="M8 30l1.4-4 2.6 2.6z" fill="#1b2440"/><path d="M24 8l6 6" stroke="#d8412f" stroke-width="3"/></svg>ใบงานพร้อมพิมพ์</h1>
-  <p class="sub">เลือกแบบ ตั้งค่า แล้วพิมพ์ลง A4 ได้ทันที มีเฉลยให้ครู</p>
+  <p class="sub">เลือกแบบ ตั้งค่า แล้วพิมพ์ลง A4 ได้ทันที มีเฉลยให้ครู<button class="help-btn" type="button" data-open="dlgGuide">วิธีใช้</button></p>
 </div></header>
 <main><div class="wrap layout">
 
@@ -146,6 +170,7 @@ nav.tabs a{display:inline-flex;align-items:center;gap:7px}
     <button type="button" data-type="match"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h5M15 17h5M9 7c5 0 1 10 6 10"/><circle cx="4" cy="7" r=".6"/><circle cx="20" cy="17" r=".6"/></svg>จับคู่คำศัพท์</button>
     <button type="button" data-type="times"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16"/></svg>สูตรคูณ</button>
     <button type="button" data-type="word"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>โจทย์ปัญหา</button>
+    <button type="button" data-type="clock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>บอกเวลา</button>
   </div>
 
   <label class="f">ชื่อโรงเรียน<input type="text" id="school" value="โรงเรียนบ้านตัวอย่าง"></label>
@@ -204,6 +229,14 @@ rabbit = กระต่าย</textarea></label>
       <select id="tBlank"><option value="100">ทุกข้อ</option><option value="50" selected>ครึ่งหนึ่ง</option><option value="30">บางข้อ</option></select></label>
   </div>
 
+  <div class="opt" id="o-clock">
+    <div class="two">
+      <label class="f">ความละเอียด
+        <select id="cLevel"><option value="60">ชั่วโมงตรง</option><option value="30" selected>ครึ่งชั่วโมง</option><option value="15">ทุก 15 นาที</option><option value="5">ทุก 5 นาที</option></select></label>
+      <label class="f">จำนวนนาฬิกา<input type="number" id="cCount" min="3" max="24" value="9" inputmode="numeric"></label>
+    </div>
+  </div>
+
   <div class="opt" id="o-word">
     <div class="checks" role="group" aria-label="ประเภทโจทย์">
       <label><input type="checkbox" id="wAdd" checked> บวก</label>
@@ -230,6 +263,25 @@ rabbit = กระต่าย</textarea></label>
 <div id="preview" aria-label="ตัวอย่างใบงาน"></div>
 
 </div></main>
+<footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span></footer>
+<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา หรือบอกเวลา</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
+<h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
+<h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว</li></ul></div></dialog>
+<dialog class="dlg" id="dlgPolicy" aria-labelledby="dlgPolicyT"><div class="dlg-h"><b id="dlgPolicyT">นโยบายความเป็นส่วนตัวและความปลอดภัยของข้อมูล</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b">
+<p><small>ปรับปรุงล่าสุด 15 พฤศจิกายน 2569</small></p>
+<p>ใบงานพร้อมพิมพ์เป็นเครื่องมือที่ทำงานในเบราว์เซอร์ของคุณทั้งหมด ไม่มีระบบสมาชิก และไม่มีเซิร์ฟเวอร์ของเราที่รับหรือเก็บข้อมูลที่คุณกรอก</p>
+<h3>ข้อมูลที่เว็บนี้เก็บ</h3>
+<ul><li>เว็บนี้ไม่บันทึกข้อมูลใดไว้เลย ชื่อโรงเรียน เนื้อหา และโจทย์ที่สร้าง จะหายไปเมื่อปิดหรือรีเฟรชหน้าเว็บ</li></ul>
+<h3>สิ่งที่เว็บนี้ไม่ทำ</h3>
+<ul><li>ไม่มีการสมัครสมาชิก ไม่ขออีเมลหรือรหัสผ่านของคุณ</li><li>ไม่ส่งข้อมูลที่คุณกรอกออกไปนอกเครื่อง</li><li>ไม่ใช้คุกกี้ติดตาม ไม่มีโฆษณา และไม่มีระบบวิเคราะห์ผู้เข้าชม ณ วันที่ปรับปรุงนโยบายนี้</li></ul>
+<h3>ผู้ให้บริการภายนอก</h3>
+<ul><li>เว็บนี้ฝากไฟล์ไว้กับ GitHub Pages ซึ่งอาจบันทึกข้อมูลทางเทคนิคของการเข้าชม เช่น หมายเลข IP ตามนโยบายของ GitHub</li><li>ตัวอักษรบนหน้าเว็บโหลดจาก Google Fonts เบราว์เซอร์ของคุณจึงติดต่อเซิร์ฟเวอร์ของ Google เพื่อดาวน์โหลดไฟล์ตัวอักษร</li></ul>
+<h3>การดูแลข้อมูลของคุณเอง</h3>
+<ul><li>ไม่ควรพิมพ์ชื่อจริงหรือข้อมูลส่วนตัวของนักเรียนลงในใบงานที่จะเผยแพร่ต่อ</li><li>ลบข้อมูลทั้งหมดได้ด้วยการล้างข้อมูลเว็บไซต์นี้ในการตั้งค่าของเบราว์เซอร์</li><li>ข้อมูลไม่ได้สำรองไว้ที่ใด ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ข้อมูลจะหายไป</li></ul>
+<h3>ข้อจำกัดของผลลัพธ์</h3>
+<p>ตัวเลขและเนื้อหาที่เว็บนี้แสดงเป็นการประมาณเพื่อช่วยตัดสินใจ กรุณาตรวจสอบกับข้อมูลจริงของคุณก่อนนำไปใช้ ผู้จัดทำไม่รับผิดชอบต่อความเสียหายที่เกิดจากการนำผลลัพธ์ไปใช้โดยไม่ตรวจสอบ</p>
+<h3>การเปลี่ยนแปลงและการติดต่อ</h3>
+<p>หากในอนาคตมีการเพิ่มระบบนับผู้เข้าชม โฆษณา หรือการเก็บข้อมูลแบบอื่น นโยบายนี้จะได้รับการปรับปรุงก่อนเปิดใช้ ติดต่อผู้จัดทำได้ที่หน้า <a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a></p></div></dialog>
 
 <script>
 "use strict";
@@ -244,6 +296,7 @@ const DEFAULTS = {
   hand:{title:'แบบฝึกคัดลายมือ', inst:'ให้นักเรียนเขียนทับตัวอักษรสีจาง แล้วคัดเองในบรรทัดว่างด้วยตัวบรรจง'},
   match:{title:'ใบงานจับคู่คำศัพท์', inst:'ให้นักเรียนลากเส้นจับคู่คำศัพท์กับความหมายที่ถูกต้อง'},
   times:{title:'ใบงานสูตรคูณ', inst:'ให้นักเรียนเติมผลคูณลงในช่องว่างให้ถูกต้อง'},
+  clock:{title:'ใบงานบอกเวลา', inst:'ให้นักเรียนดูหน้าปัดนาฬิกา แล้วเขียนเวลาให้ถูกต้อง'},
   word:{title:'ใบงานโจทย์ปัญหาคณิตศาสตร์', inst:'ให้นักเรียนอ่านโจทย์ แสดงวิธีทำ และเขียนคำตอบ'}
 };
 
@@ -359,8 +412,28 @@ function buildWord(){
   return { pages, key };
 }
 
+function clockSVG(h, m){
+  const P = (r, a) => [(50 + r * Math.sin(a)).toFixed(2), (50 - r * Math.cos(a)).toFixed(2)];
+  let g = '<svg viewBox="0 0 100 100" role="img" aria-label="หน้าปัดนาฬิกา"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#111" stroke-width="2.5"/>';
+  for (let i = 0; i < 60; i++){ const a = i * 6 * Math.PI / 180, big = i % 5 === 0, p1 = P(big ? 40.5 : 43.5, a), p2 = P(46, a);
+    g += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="#111" stroke-width="${big ? 1.6 : .6}"/>`; }
+  for (let n = 1; n <= 12; n++){ const t = P(33, n * 30 * Math.PI / 180);
+    g += `<text x="${t[0]}" y="${(+t[1] + 3.6).toFixed(2)}" text-anchor="middle" font-size="10" font-weight="600" font-family="Sarabun,sans-serif">${n}</text>`; }
+  const hh = P(21, ((h % 12) + m / 60) * 30 * Math.PI / 180), mm = P(34, m * 6 * Math.PI / 180);
+  return g + `<line x1="50" y1="50" x2="${hh[0]}" y2="${hh[1]}" stroke="#111" stroke-width="3.4" stroke-linecap="round"/><line x1="50" y1="50" x2="${mm[0]}" y2="${mm[1]}" stroke="#d8412f" stroke-width="2" stroke-linecap="round"/><circle cx="50" cy="50" r="2.4" fill="#111"/></svg>`;
+}
+function buildClock(){
+  const r = rng(seed), step = +$('cLevel').value, n = clamp(parseInt($('cCount').value) || 9, 3, 24), ts = [], seen = new Set();
+  while (ts.length < n){ const h = ri(r, 1, 12), m = step === 60 ? 0 : ri(r, 0, 60 / step - 1) * step, k = h + ':' + m;
+    if (seen.has(k) && seen.size < 12 * (60 / step)) continue; seen.add(k); ts.push([h, m]); }
+  let idx = 0;
+  const pages = chunk(ts, 9, 12).map((c, pi) => page(`<div class="ck">${c.map(t => `<div class="q"><span class="n">${++idx})</span>${clockSVG(t[0], t[1])}เวลา ............ : ............ น.</div>`).join('')}</div>`, pi === 0));
+  const key = keyPage(`<div class="k-list">${ts.map((t, i) => `<div>${i + 1}) <span class="ans">${t[0]}.${String(t[1]).padStart(2, '0')} น.</span></div>`).join('')}</div>`);
+  return { pages, key };
+}
+
 /* ---------- render ---------- */
-const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord };
+const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock };
 function render(){
   const out = BUILD[type]();
   $('preview').innerHTML = out.pages.join('') + ($('withKey').checked && out.key ? out.key : '');
@@ -395,6 +468,12 @@ $('print').addEventListener('click', () => window.print());
 addEventListener('resize', fit);
 setType('math');
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+/* ---------- guide + policy dialogs ---------- */
+document.addEventListener('click', e => {
+  const o = e.target.closest('[data-open]'); if (o){ const d = document.getElementById(o.dataset.open); if (d && d.showModal) d.showModal(); return; }
+  const c = e.target.closest('[data-close]'); if (c){ c.closest('dialog').close(); return; }
+  if (e.target.tagName === 'DIALOG') e.target.close();
+});
 </script>
 </body>
 </html>
