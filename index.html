@@ -157,6 +157,14 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
 
 /* comparing numbers */
 .m-h .circ{width:9mm;height:9mm;border:1.4px solid #111;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;margin:0 1mm -1.5mm}
+
+/* number patterns */
+.sq{display:grid;gap:0}
+.sq .r{display:flex;align-items:center;gap:1.6mm;height:15.5mm}
+.sq .n{color:#666;font-size:11pt;width:9mm}
+.sq .bx{width:17mm;flex:none;height:11mm;border:1.4px solid #111;border-radius:1.5mm;display:flex;align-items:center;justify-content:center;font-size:15pt;font-variant-numeric:tabular-nums}
+.sq .bx.blank{border-style:dashed}
+.sq .ar{color:#888;font-size:11pt}
 </style>
 </head>
 <body>
@@ -175,6 +183,7 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
     <button type="button" data-type="word"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>โจทย์ปัญหา</button>
     <button type="button" data-type="clock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>บอกเวลา</button>
     <button type="button" data-type="cmp"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>เปรียบเทียบจำนวน</button>
+    <button type="button" data-type="seq"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17h3V12h4V7h4V4h5"/></svg>แบบรูปจำนวน</button>
   </div>
 
   <label class="f">ชื่อโรงเรียน<input type="text" id="school" value="โรงเรียนบ้านตัวอย่าง"></label>
@@ -242,6 +251,14 @@ rabbit = กระต่าย</textarea></label>
       <select id="tBlank"><option value="100">ทุกข้อ</option><option value="50" selected>ครึ่งหนึ่ง</option><option value="30">บางข้อ</option></select></label>
   </div>
 
+  <div class="opt" id="o-seq">
+    <div class="two">
+      <label class="f">รูปแบบ
+        <select id="sKind"><option value="easy">นับเพิ่มทีละ 1 2 5 10</option><option value="mid">นับเพิ่มทีละ 3 4 6 25 50</option><option value="down">นับลด</option><option value="mix">ผสมทั้งเพิ่มและลด</option></select></label>
+      <label class="f">จำนวนข้อ<input type="number" id="sCount" min="4" max="40" value="10" inputmode="numeric"></label>
+    </div>
+  </div>
+
   <div class="opt" id="o-cmp">
     <div class="two">
       <label class="f">จำนวนไม่เกิน
@@ -285,7 +302,7 @@ rabbit = กระต่าย</textarea></label>
 
 </div></main>
 <footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span></footer>
-<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา หรือเปรียบเทียบจำนวน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
+<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน หรือแบบรูปจำนวน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
 <h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
 <h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 7 หมวด</li></ul></div></dialog>
 <dialog class="dlg" id="dlgPolicy" aria-labelledby="dlgPolicyT"><div class="dlg-h"><b id="dlgPolicyT">นโยบายความเป็นส่วนตัวและความปลอดภัยของข้อมูล</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b">
@@ -317,6 +334,7 @@ const DEFAULTS = {
   hand:{title:'แบบฝึกคัดลายมือ', inst:'ให้นักเรียนเขียนทับตัวอักษรสีจาง แล้วคัดเองในบรรทัดว่างด้วยตัวบรรจง'},
   match:{title:'ใบงานจับคู่คำศัพท์', inst:'ให้นักเรียนลากเส้นจับคู่คำศัพท์กับความหมายที่ถูกต้อง'},
   times:{title:'ใบงานสูตรคูณ', inst:'ให้นักเรียนเติมผลคูณลงในช่องว่างให้ถูกต้อง'},
+  seq:{title:'ใบงานแบบรูปของจำนวน', inst:'ให้นักเรียนสังเกตแบบรูป แล้วเติมจำนวนที่หายไปลงในช่องว่าง'},
   cmp:{title:'ใบงานเปรียบเทียบจำนวน', inst:'ให้นักเรียนเติมเครื่องหมาย > < หรือ = ลงในวงกลม'},
   clock:{title:'ใบงานบอกเวลา', inst:'ให้นักเรียนดูหน้าปัดนาฬิกา แล้วเขียนเวลาให้ถูกต้อง'},
   word:{title:'ใบงานโจทย์ปัญหาคณิตศาสตร์', inst:'ให้นักเรียนอ่านโจทย์ แสดงวิธีทำ และเขียนคำตอบ'}
@@ -454,6 +472,24 @@ function buildClock(){
   return { pages, key };
 }
 
+function buildSeq(){
+  const r = rng(seed), kind = $('sKind').value, n = clamp(parseInt($('sCount').value) || 10, 4, 40), ps = [];
+  const UP = { easy:[1,2,5,10], mid:[3,4,6,25,50] };
+  for (let i = 0; i < n; i++){
+    const down = kind === 'down' || (kind === 'mix' && r() < .5);
+    const steps = kind === 'mid' ? UP.mid : kind === 'mix' ? UP.easy.concat(UP.mid) : UP.easy, step = steps[Math.floor(r() * steps.length)];
+    const start = down ? step * 6 + ri(r, 0, 40) : ri(r, 0, 60), terms = [];
+    for (let k = 0; k < 7; k++) terms.push(start + (down ? -1 : 1) * step * k);
+    const hide = new Set(); while (hide.size < 3) hide.add(ri(r, 2, 6));
+    ps.push({terms, hide});
+  }
+  const row = (q, i, key) => `<div class="r"><span class="n">${i + 1})</span>${q.terms.map((t, k) => (k ? '<span class="ar">,</span>' : '') + (q.hide.has(k) ? `<span class="bx blank${key ? ' ans' : ''}">${key ? nf(t) : ''}</span>` : `<span class="bx">${nf(t)}</span>`)).join('')}</div>`;
+  let idx = 0;
+  const pages = chunk(ps, 13, 16).map((c, pi) => page(`<div class="sq">${c.map(q => row(q, idx++, false)).join('')}</div>`, pi === 0));
+  const keys = chunk(ps, 16, 16); let kidx = 0;
+  const key = keys.map(c => keyPage(`<div class="sq">${c.map(q => row(q, kidx++, true)).join('')}</div>`)).join('');
+  return { pages, key };
+}
 function buildCmp(){
   const r = rng(seed), max = +$('pMax').value, n = clamp(parseInt($('pCount').value) || 20, 6, 60), ps = [];
   for (let i = 0; i < n; i++){ const a = ri(r, 1, max), b = r() < .12 ? a : ri(r, 1, max); ps.push([a, b, a > b ? '>' : a < b ? '<' : '=']); }
@@ -474,7 +510,7 @@ const VOCAB = {
 };
 
 /* ---------- render ---------- */
-const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock, cmp:buildCmp };
+const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock, cmp:buildCmp, seq:buildSeq };
 function render(){
   const out = BUILD[type]();
   $('preview').innerHTML = out.pages.join('') + ($('withKey').checked && out.key ? out.key : '');
