@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ใบงานพร้อมพิมพ์</title>
 <meta name="description" content="สร้างใบงานคณิตศาสตร์ คัดลายมือ จับคู่คำศัพท์ และสูตรคูณ พร้อมเฉลย พิมพ์ลง A4 ได้ทันที ใช้ฟรีสำหรับครูและผู้ปกครอง">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ใบงานพร้อมพิมพ์ สร้างใบงานฟรีสำหรับครูและผู้ปกครอง">
+<meta property="og:description" content="สร้างใบงานคณิตศาสตร์ คัดลายมือ จับคู่คำศัพท์ บอกเวลา เศษส่วน และโจทย์ปัญหา พร้อมเฉลย สร้างได้หลายชุดไม่ซ้ำกัน พิมพ์ลง A4 ได้ทันที">
+<meta property="og:url" content="https://rookiekrit6-dotcom.github.io/Worksheet/">
+<meta property="og:image" content="https://rookiekrit6-dotcom.github.io/Worksheet/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2040%2040%27%3E%3Crect%20width%3D%2740%27%20height%3D%2740%27%20rx%3D%278%27%20fill%3D%27%231f4a3c%27/%3E%3Cpath%20d%3D%27M9%2031l3-9L27%207l6%206-15%2015z%27%20fill%3D%27%23f6c443%27/%3E%3Cpath%20d%3D%27M9%2031l3-9%206%206z%27%20fill%3D%27%23f3d9b0%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;700&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -261,6 +270,12 @@ rabbit = กระต่าย</textarea></label>
       <button type="button" class="btn alt tiny" data-set="day">วันในสัปดาห์</button>
       <button type="button" class="btn alt tiny" data-set="body">ร่างกาย</button>
       <button type="button" class="btn alt tiny" data-set="school">ของในห้องเรียน</button>
+      <button type="button" class="btn alt tiny" data-set="job">อาชีพ</button>
+      <button type="button" class="btn alt tiny" data-set="food">อาหาร</button>
+      <button type="button" class="btn alt tiny" data-set="clothes">เสื้อผ้า</button>
+      <button type="button" class="btn alt tiny" data-set="number">ตัวเลข</button>
+      <button type="button" class="btn alt tiny" data-set="weather">สภาพอากาศ</button>
+      <button type="button" class="btn alt tiny" data-set="place">สถานที่</button>
     </div>
   </div>
 
@@ -339,7 +354,7 @@ rabbit = กระต่าย</textarea></label>
 <footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span></footer>
 <dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน แบบรูปจำนวน หรือเศษส่วน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>เลือกจำนวนชุดได้ถึง 6 ชุดที่โจทย์ไม่ซ้ำกัน เหมาะสำหรับแจกนักเรียนที่นั่งติดกัน และเลือกกรอบตกแต่งได้</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
 <h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
-<h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 7 หมวด</li></ul></div></dialog>
+<h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 13 หมวด</li></ul></div></dialog>
 <dialog class="dlg" id="dlgPolicy" aria-labelledby="dlgPolicyT"><div class="dlg-h"><b id="dlgPolicyT">นโยบายความเป็นส่วนตัวและความปลอดภัยของข้อมูล</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b">
 <p><small>ปรับปรุงล่าสุด 15 พฤศจิกายน 2569</small></p>
 <p>ใบงานพร้อมพิมพ์เป็นเครื่องมือที่ทำงานในเบราว์เซอร์ของคุณทั้งหมด ไม่มีระบบสมาชิก และไม่มีเซิร์ฟเวอร์ของเราที่รับหรือเก็บข้อมูลที่คุณกรอก</p>
@@ -463,20 +478,24 @@ function wordProblems(){
   const n = clamp(parseInt($('wCount').value) || 4, 2, 12), out = [], pick = arr => arr[Math.floor(r() * arr.length)];
   for (let i = 0; i < n; i++){
     const op = ops[i % ops.length], A = pick(W_NAMES); let B = pick(W_NAMES); while (B === A) B = pick(W_NAMES);
-    const [item, unit] = pick(W_ITEMS), alt = r() < .5; let text, expr, ans, au = unit;
+    const [item, unit] = pick(W_ITEMS), k = Math.floor(r() * 3); let text, expr, ans, au = unit;
     if (op === '+'){ const a = ri(r, 1, L.max - 1), b = ri(r, 1, L.max - a); ans = a + b; expr = `${nf(a)} + ${nf(b)}`;
-      text = alt ? `${A}มี${item} ${nf(a)} ${unit} ${B}ให้มาอีก ${nf(b)} ${unit} ${A}มี${item}ทั้งหมดกี่${unit}`
-                 : `ร้านค้าขาย${item}ได้ ${nf(a)} ${unit}ในตอนเช้า และขายได้อีก ${nf(b)} ${unit}ในตอนบ่าย ร้านค้าขาย${item}ได้ทั้งหมดกี่${unit}`; }
+      if (k === 0) text = `${A}มี${item} ${nf(a)} ${unit} ${B}ให้มาอีก ${nf(b)} ${unit} ${A}มี${item}ทั้งหมดกี่${unit}`;
+      else if (k === 1) text = `ร้านค้าขาย${item}ได้ ${nf(a)} ${unit}ในตอนเช้า และขายได้อีก ${nf(b)} ${unit}ในตอนบ่าย ร้านค้าขาย${item}ได้ทั้งหมดกี่${unit}`;
+      else { text = `ห้องสมุดมีหนังสือนิทาน ${nf(a)} เล่ม และหนังสือการ์ตูน ${nf(b)} เล่ม ห้องสมุดมีหนังสือทั้งหมดกี่เล่ม`; au = 'เล่ม'; } }
     else if (op === '−'){ const a = ri(r, 2, L.max), b = ri(r, 1, a - 1); ans = a - b; expr = `${nf(a)} − ${nf(b)}`;
-      if (alt) text = `${A}มี${item} ${nf(a)} ${unit} แบ่งให้${B} ${nf(b)} ${unit} ${A}เหลือ${item}กี่${unit}`;
-      else { text = `${A}มีเงิน ${nf(a)} บาท ซื้อ${item}ไป ${nf(b)} บาท ${A}เหลือเงินกี่บาท`; au = 'บาท'; } }
+      if (k === 0) text = `${A}มี${item} ${nf(a)} ${unit} แบ่งให้${B} ${nf(b)} ${unit} ${A}เหลือ${item}กี่${unit}`;
+      else if (k === 1){ text = `${A}มีเงิน ${nf(a)} บาท ซื้อ${item}ไป ${nf(b)} บาท ${A}เหลือเงินกี่บาท`; au = 'บาท'; }
+      else { text = `รถประจำทางมีผู้โดยสาร ${nf(a)} คน ลงที่ป้ายแรก ${nf(b)} คน บนรถเหลือผู้โดยสารกี่คน`; au = 'คน'; } }
     else { const x = ri(r, L.a[0], L.a[1]), y = ri(r, L.b[0], L.b[1]);
       if (op === '×'){ ans = x * y; expr = `${nf(x)} × ${nf(y)}`;
-        if (alt) text = `${item} 1 ถุงมี ${nf(y)} ${unit} ${A}ซื้อมา ${nf(x)} ถุง ${A}มี${item}ทั้งหมดกี่${unit}`;
-        else { text = `${A}ออมเงินวันละ ${nf(y)} บาท เป็นเวลา ${nf(x)} วัน ${A}มีเงินออมทั้งหมดกี่บาท`; au = 'บาท'; } }
+        if (k === 0) text = `${item} 1 ถุงมี ${nf(y)} ${unit} ${A}ซื้อมา ${nf(x)} ถุง ${A}มี${item}ทั้งหมดกี่${unit}`;
+        else if (k === 1){ text = `${A}ออมเงินวันละ ${nf(y)} บาท เป็นเวลา ${nf(x)} วัน ${A}มีเงินออมทั้งหมดกี่บาท`; au = 'บาท'; }
+        else { text = `ห้องเรียนมีโต๊ะ ${nf(x)} แถว แถวละ ${nf(y)} ตัว ห้องเรียนมีโต๊ะทั้งหมดกี่ตัว`; au = 'ตัว'; } }
       else { const total = x * y; ans = y; expr = `${nf(total)} ÷ ${nf(x)}`;
-        if (alt) text = `${A}มี${item} ${nf(total)} ${unit} แบ่งให้เพื่อน ${nf(x)} คน คนละเท่า ๆ กัน เพื่อนได้${item}คนละกี่${unit}`;
-        else { text = `ครูมี${item} ${nf(total)} ${unit} จัดใส่ถุง ถุงละ ${nf(x)} ${unit} ครูจัดได้ทั้งหมดกี่ถุง`; au = 'ถุง'; } } }
+        if (k === 0) text = `${A}มี${item} ${nf(total)} ${unit} แบ่งให้เพื่อน ${nf(x)} คน คนละเท่า ๆ กัน เพื่อนได้${item}คนละกี่${unit}`;
+        else if (k === 1){ text = `ครูมี${item} ${nf(total)} ${unit} จัดใส่ถุง ถุงละ ${nf(x)} ${unit} ครูจัดได้ทั้งหมดกี่ถุง`; au = 'ถุง'; }
+        else { text = `ชาวสวนเก็บ${item}ได้ ${nf(total)} ${unit} บรรจุใส่กล่อง กล่องละ ${nf(x)} ${unit} ได้ทั้งหมดกี่กล่อง`; au = 'กล่อง'; } } }
     out.push({text, expr, ans, au});
   }
   return out;
@@ -562,6 +581,12 @@ const VOCAB = {
   family:'father = พ่อ\nmother = แม่\nbrother = พี่ชายหรือน้องชาย\nsister = พี่สาวหรือน้องสาว\ngrandfather = ปู่หรือตา\ngrandmother = ย่าหรือยาย\nuncle = ลุงหรืออา\naunt = ป้าหรือน้า\nbaby = ทารก\nfriend = เพื่อน',
   day:'Sunday = วันอาทิตย์\nMonday = วันจันทร์\nTuesday = วันอังคาร\nWednesday = วันพุธ\nThursday = วันพฤหัสบดี\nFriday = วันศุกร์\nSaturday = วันเสาร์',
   body:'head = ศีรษะ\neye = ตา\near = หู\nnose = จมูก\nmouth = ปาก\nhand = มือ\narm = แขน\nleg = ขา\nfoot = เท้า\ntooth = ฟัน',
+  job:'teacher = ครู\ndoctor = หมอ\nnurse = พยาบาล\nfarmer = ชาวนา\npolice officer = ตำรวจ\nsoldier = ทหาร\ncook = พ่อครัว\ndriver = คนขับรถ\nsinger = นักร้อง\nfisherman = ชาวประมง',
+  food:'rice = ข้าว\negg = ไข่\nmilk = นม\nwater = น้ำ\nbread = ขนมปัง\nchicken = ไก่\npork = หมู\nnoodle = ก๋วยเตี๋ยว\nsoup = ซุป\nvegetable = ผัก',
+  clothes:'shirt = เสื้อ\ntrousers = กางเกง\nskirt = กระโปรง\nshoes = รองเท้า\nsocks = ถุงเท้า\nhat = หมวก\njacket = เสื้อแจ็กเก็ต\nbelt = เข็มขัด\nglasses = แว่นตา\nwatch = นาฬิกาข้อมือ',
+  number:'one = หนึ่ง\ntwo = สอง\nthree = สาม\nfour = สี่\nfive = ห้า\nsix = หก\nseven = เจ็ด\neight = แปด\nnine = เก้า\nten = สิบ',
+  weather:'sunny = แดดออก\nrainy = ฝนตก\ncloudy = เมฆมาก\nwindy = ลมแรง\nhot = ร้อน\ncold = หนาว\nstorm = พายุ\nrainbow = รุ้ง',
+  place:'school = โรงเรียน\nhospital = โรงพยาบาล\nmarket = ตลาด\ntemple = วัด\nhouse = บ้าน\npark = สวนสาธารณะ\nlibrary = ห้องสมุด\nfarm = ฟาร์ม\nbeach = ชายหาด\nairport = สนามบิน',
   school:'book = หนังสือ\npencil = ดินสอ\neraser = ยางลบ\nruler = ไม้บรรทัด\ndesk = โต๊ะเรียน\nchair = เก้าอี้\nbag = กระเป๋า\nboard = กระดาน\nteacher = ครู\nstudent = นักเรียน'
 };
 
