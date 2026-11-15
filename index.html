@@ -200,6 +200,11 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
 .rl th{font-size:9pt;height:10mm}
 .rl td{height:6.5mm;font-size:9.5pt}
 .rl .no{width:9mm}.rl .nm{width:46mm;text-align:left;padding-left:1.5mm;white-space:nowrap}.rl .sum{width:11mm}
+
+/* notice shown inside in-app browsers, where printing and saving files often fail */
+.inapp{max-width:1080px;margin:12px auto 0;padding:10px 14px;border-radius:12px;background:#fff4d6;border:1px solid #e2a100;color:#5a3d00;font-size:.92rem}
+.site-ft .sis{display:flex;flex-wrap:wrap;gap:6px 14px;flex-basis:100%}
+@media(min-width:900px){#toPrev{display:none}}
 </style>
 </head>
 <body>
@@ -378,16 +383,17 @@ rabbit = กระต่าย</textarea></label>
   <div class="checks"><label><input type="checkbox" id="withKey" checked> แนบหน้าเฉลย</label></div>
   <div class="row">
     <button type="button" class="btn" id="print"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5"/><rect x="3" y="8" width="18" height="9" rx="2"/><rect x="7" y="14" width="10" height="7"/></svg>พิมพ์ใบงาน</button>
+    <button type="button" class="btn alt" id="toPrev">ดูตัวอย่าง</button>
     <button type="button" class="btn alt" id="reroll"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>สุ่มโจทย์ใหม่</button>
   </div>
   <p class="note" id="pageInfo"></p>
-  <p class="note">ตอนพิมพ์ให้เลือกกระดาษ A4 ขอบกระดาษ "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์ ถ้าต้องการไฟล์ PDF ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</p>
+  <p class="note">ตอนพิมพ์ให้เลือกกระดาษ A4 ขอบกระดาษ "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์ ถ้าต้องการไฟล์ PDF ให้เลือกปลายทางเป็น "บันทึกเป็น PDF" ถ้ากดพิมพ์แล้วไม่มีอะไรเกิดขึ้น ให้เปิดเว็บนี้ใน Chrome หรือ Safari แทนการเปิดจากในแอป Facebook หรือ LINE</p>
 </form>
 
 <div id="preview" aria-label="ตัวอย่างใบงาน"></div>
 
 </div></main>
-<footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span></footer>
+<footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span><span class="sis">เครื่องมืออื่นจากผู้จัดทำเดียวกัน: <a href="https://rookiekrit6-dotcom.github.io/Seller-Tool/">กำไรแม่ค้า</a><a href="https://rookiekrit6-dotcom.github.io/FoodTool/">สูตรเปิดร้าน</a></span></footer>
 <dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน แบบรูปจำนวน หรือเศษส่วน และยังมีตารางเรียนกับใบเช็กชื่อสำหรับงานประจำห้อง</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>เลือกจำนวนชุดได้ถึง 6 ชุดที่โจทย์ไม่ซ้ำกัน เหมาะสำหรับแจกนักเรียนที่นั่งติดกัน และเลือกกรอบตกแต่งได้</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
 <h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
 <h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 13 หมวด</li></ul></div></dialog>
@@ -689,6 +695,7 @@ $('panel').addEventListener('click', e => { const b = e.target.closest('[data-fi
   const v = e.target.closest('[data-set]'); if (v){ $('pairs').value = VOCAB[v.dataset.set]; render(); } });
 $('reroll').addEventListener('click', () => { seed = (Math.random() * 2 ** 31) | 0; render(); });
 $('print').addEventListener('click', () => window.print());
+$('toPrev').addEventListener('click', () => $('preview').scrollIntoView({behavior:'smooth', block:'start'}));
 addEventListener('resize', fit);
 setType('math');
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
@@ -698,6 +705,12 @@ document.addEventListener('click', e => {
   const c = e.target.closest('[data-close]'); if (c){ c.closest('dialog').close(); return; }
   if (e.target.tagName === 'DIALOG') e.target.close();
 });
+/* ---------- in-app browser notice ---------- */
+if (/FBAN|FBAV|FB_IAB|Line\/|Instagram|TikTok/i.test(navigator.userAgent)){
+  const n = document.createElement('div'); n.className = 'inapp'; n.setAttribute('role', 'note');
+  n.textContent = 'คุณกำลังเปิดเว็บนี้จากในแอป ปุ่มพิมพ์และปุ่มบันทึกรูปอาจใช้ไม่ได้ แนะนำให้กดเมนูมุมขวาบนแล้วเลือกเปิดในเบราว์เซอร์ เช่น Chrome หรือ Safari';
+  const m = document.querySelector('main'); m.insertBefore(n, m.firstChild);
+}
 </script>
 </body>
 </html>
