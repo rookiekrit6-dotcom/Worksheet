@@ -165,6 +165,12 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
 .sq .bx{width:17mm;flex:none;height:11mm;border:1.4px solid #111;border-radius:1.5mm;display:flex;align-items:center;justify-content:center;font-size:15pt;font-variant-numeric:tabular-nums}
 .sq .bx.blank{border-style:dashed}
 .sq .ar{color:#888;font-size:11pt}
+
+/* fractions */
+.fr svg{width:46mm;height:27.6mm}
+.fb{display:inline-grid;vertical-align:middle;margin-left:2mm}
+.fb i{width:10mm;height:8mm;border:1.2px dashed #111;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:13pt}
+.fb i+i{border-top:2px solid #111}
 </style>
 </head>
 <body>
@@ -184,6 +190,7 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
     <button type="button" data-type="clock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>บอกเวลา</button>
     <button type="button" data-type="cmp"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>เปรียบเทียบจำนวน</button>
     <button type="button" data-type="seq"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17h3V12h4V7h4V4h5"/></svg>แบบรูปจำนวน</button>
+    <button type="button" data-type="frac"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9h9"/></svg>เศษส่วน</button>
   </div>
 
   <label class="f">ชื่อโรงเรียน<input type="text" id="school" value="โรงเรียนบ้านตัวอย่าง"></label>
@@ -219,6 +226,10 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
       <button type="button" class="btn alt tiny" data-fill="AZ">A ถึง Z</button>
       <button type="button" class="btn alt tiny" data-fill="az">a ถึง z</button>
       <button type="button" class="btn alt tiny" data-fill="num">๐ ถึง ๙</button>
+      <button type="button" class="btn alt tiny" data-fill="vowel">สระ</button>
+      <button type="button" class="btn alt tiny" data-fill="word">คำพื้นฐาน</button>
+      <button type="button" class="btn alt tiny" data-fill="day">ชื่อวัน</button>
+      <button type="button" class="btn alt tiny" data-fill="month">ชื่อเดือน</button>
     </div>
     <label class="f">บรรทัดว่างให้เขียนเอง ต่อจากแต่ละบรรทัด
       <select id="hBlank"><option value="0">ไม่มี</option><option value="1" selected>1 บรรทัด</option><option value="2">2 บรรทัด</option></select></label>
@@ -249,6 +260,16 @@ rabbit = กระต่าย</textarea></label>
     <label class="f">แม่สูตรคูณ (คั่นด้วยจุลภาค)<input type="text" id="tables" value="2,3,4,5,6,7" inputmode="numeric"></label>
     <label class="f">ช่องที่เว้นให้เติม
       <select id="tBlank"><option value="100">ทุกข้อ</option><option value="50" selected>ครึ่งหนึ่ง</option><option value="30">บางข้อ</option></select></label>
+  </div>
+
+  <div class="opt" id="o-frac">
+    <div class="two">
+      <label class="f">รูปภาพ
+        <select id="fShape"><option value="bar">แถบสี่เหลี่ยม</option><option value="pie">วงกลม</option><option value="mix">ผสม</option></select></label>
+      <label class="f">แบ่งได้มากสุดกี่ส่วน
+        <select id="fMax"><option value="4">4</option><option value="6">6</option><option value="8" selected>8</option><option value="10">10</option><option value="12">12</option></select></label>
+    </div>
+    <label class="f">จำนวนข้อ<input type="number" id="fCount" min="3" max="24" value="9" inputmode="numeric"></label>
   </div>
 
   <div class="opt" id="o-seq">
@@ -302,7 +323,7 @@ rabbit = กระต่าย</textarea></label>
 
 </div></main>
 <footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span></footer>
-<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน หรือแบบรูปจำนวน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
+<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน แบบรูปจำนวน หรือเศษส่วน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
 <h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
 <h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 7 หมวด</li></ul></div></dialog>
 <dialog class="dlg" id="dlgPolicy" aria-labelledby="dlgPolicyT"><div class="dlg-h"><b id="dlgPolicyT">นโยบายความเป็นส่วนตัวและความปลอดภัยของข้อมูล</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b">
@@ -334,6 +355,7 @@ const DEFAULTS = {
   hand:{title:'แบบฝึกคัดลายมือ', inst:'ให้นักเรียนเขียนทับตัวอักษรสีจาง แล้วคัดเองในบรรทัดว่างด้วยตัวบรรจง'},
   match:{title:'ใบงานจับคู่คำศัพท์', inst:'ให้นักเรียนลากเส้นจับคู่คำศัพท์กับความหมายที่ถูกต้อง'},
   times:{title:'ใบงานสูตรคูณ', inst:'ให้นักเรียนเติมผลคูณลงในช่องว่างให้ถูกต้อง'},
+  frac:{title:'ใบงานเศษส่วน', inst:'ให้นักเรียนดูส่วนที่ระบายสี แล้วเขียนเศษส่วนลงในช่องว่าง'},
   seq:{title:'ใบงานแบบรูปของจำนวน', inst:'ให้นักเรียนสังเกตแบบรูป แล้วเติมจำนวนที่หายไปลงในช่องว่าง'},
   cmp:{title:'ใบงานเปรียบเทียบจำนวน', inst:'ให้นักเรียนเติมเครื่องหมาย > < หรือ = ลงในวงกลม'},
   clock:{title:'ใบงานบอกเวลา', inst:'ให้นักเรียนดูหน้าปัดนาฬิกา แล้วเขียนเวลาให้ถูกต้อง'},
@@ -472,6 +494,26 @@ function buildClock(){
   return { pages, key };
 }
 
+function fracSVG(n, d, pie){
+  let g = '<svg viewBox="0 0 100 60" role="img" aria-label="รูปเศษส่วน">';
+  if (pie){
+    for (let k = 0; k < d; k++){ const a1 = k / d * 2 * Math.PI, a2 = (k + 1) / d * 2 * Math.PI, P = a => [(50 + 27 * Math.sin(a)).toFixed(2), (30 - 27 * Math.cos(a)).toFixed(2)], p1 = P(a1), p2 = P(a2);
+      g += `<path d="M50 30L${p1[0]} ${p1[1]}A27 27 0 0 1 ${p2[0]} ${p2[1]}Z" fill="${k < n ? '#9db7e8' : '#fff'}" stroke="#111" stroke-width="1"/>`; }
+  } else {
+    const w = 90 / d;
+    for (let k = 0; k < d; k++) g += `<rect x="${(5 + k * w).toFixed(2)}" y="16" width="${w.toFixed(2)}" height="28" fill="${k < n ? '#9db7e8' : '#fff'}" stroke="#111" stroke-width="1"/>`;
+  }
+  return g + '</svg>';
+}
+function buildFrac(){
+  const r = rng(seed), max = +$('fMax').value, shape = $('fShape').value, cnt = clamp(parseInt($('fCount').value) || 9, 3, 24), ps = [];
+  for (let i = 0; i < cnt; i++){ const d = ri(r, 2, max), n = ri(r, 1, d - 1); ps.push([n, d, shape === 'pie' || (shape === 'mix' && r() < .5)]); }
+  let idx = 0;
+  const cell = (q, key) => `<div class="q fr"><span class="n">${++idx})</span>${fracSVG(q[0], q[1], q[2])}เศษส่วน <span class="fb"><i${key ? ' class="ans"' : ''}>${key ? q[0] : ''}</i><i${key ? ' class="ans"' : ''}>${key ? q[1] : ''}</i></span></div>`;
+  const pages = chunk(ps, 9, 12).map((c, pi) => page(`<div class="ck">${c.map(q => cell(q, false)).join('')}</div>`, pi === 0));
+  const key = keyPage(`<div class="k-list">${ps.map((q, i) => `<div>${i + 1}) <span class="ans">${q[0]}/${q[1]}</span></div>`).join('')}</div>`);
+  return { pages, key };
+}
 function buildSeq(){
   const r = rng(seed), kind = $('sKind').value, n = clamp(parseInt($('sCount').value) || 10, 4, 40), ps = [];
   const UP = { easy:[1,2,5,10], mid:[3,4,6,25,50] };
@@ -510,7 +552,7 @@ const VOCAB = {
 };
 
 /* ---------- render ---------- */
-const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock, cmp:buildCmp, seq:buildSeq };
+const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock, cmp:buildCmp, seq:buildSeq, frac:buildFrac };
 function render(){
   const out = BUILD[type]();
   $('preview').innerHTML = out.pages.join('') + ($('withKey').checked && out.key ? out.key : '');
@@ -535,7 +577,11 @@ const FILL = {
   th:'ก ข ค ฆ ง จ ฉ ช ซ ฌ ญ\nฎ ฏ ฐ ฑ ฒ ณ ด ต ถ ท ธ\nน บ ป ผ ฝ พ ฟ ภ ม ย ร\nล ว ศ ษ ส ห ฬ อ ฮ',
   AZ:'A B C D E F G H I\nJ K L M N O P Q R\nS T U V W X Y Z',
   az:'a b c d e f g h i\nj k l m n o p q r\ns t u v w x y z',
-  num:'๐ ๑ ๒ ๓ ๔ ๕ ๖ ๗ ๘ ๙\n0 1 2 3 4 5 6 7 8 9'
+  num:'๐ ๑ ๒ ๓ ๔ ๕ ๖ ๗ ๘ ๙\n0 1 2 3 4 5 6 7 8 9',
+  vowel:'อะ อา อิ อี อึ อือ อุ อู\nเอะ เอ แอะ แอ โอะ โอ\nเอาะ ออ เอีย เอือ อัว\nอำ ใอ ไอ เอา',
+  word:'พ่อ แม่ พี่ น้อง ปู่ ย่า ตา ยาย\nบ้าน โรงเรียน วัด ตลาด\nกิน นอน เดิน วิ่ง อ่าน เขียน',
+  day:'วันจันทร์ วันอังคาร วันพุธ\nวันพฤหัสบดี วันศุกร์\nวันเสาร์ วันอาทิตย์',
+  month:'มกราคม กุมภาพันธ์ มีนาคม\nเมษายน พฤษภาคม มิถุนายน\nกรกฎาคม สิงหาคม กันยายน\nตุลาคม พฤศจิกายน ธันวาคม'
 };
 document.querySelector('.types').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setType(b.dataset.type); });
 $('panel').addEventListener('input', render);
