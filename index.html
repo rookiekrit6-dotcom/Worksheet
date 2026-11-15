@@ -295,6 +295,9 @@ rabbit = กระต่าย</textarea></label>
       <button type="button" class="btn alt tiny" data-set="number">ตัวเลข</button>
       <button type="button" class="btn alt tiny" data-set="weather">สภาพอากาศ</button>
       <button type="button" class="btn alt tiny" data-set="place">สถานที่</button>
+      <button type="button" class="btn alt tiny" data-set="transport">ยานพาหนะ</button>
+      <button type="button" class="btn alt tiny" data-set="home">ของในบ้าน</button>
+      <button type="button" class="btn alt tiny" data-set="verb">คำกริยา</button>
     </div>
   </div>
 
@@ -396,7 +399,7 @@ rabbit = กระต่าย</textarea></label>
 <footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://www.facebook.com/profile.php?id=61594365461250" target="_blank" rel="noopener">แจ้งปัญหาหรือเสนอแนะทาง Facebook</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span><span class="sis">เครื่องมืออื่นจากผู้จัดทำเดียวกัน: <a href="https://rookiekrit6-dotcom.github.io/Seller-Tool/">กำไรแม่ค้า</a><a href="https://rookiekrit6-dotcom.github.io/FoodTool/">สูตรเปิดร้าน</a></span></footer>
 <dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน แบบรูปจำนวน หรือเศษส่วน และยังมีตารางเรียนกับใบเช็กชื่อสำหรับงานประจำห้อง</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>เลือกจำนวนชุดได้ถึง 6 ชุดที่โจทย์ไม่ซ้ำกัน เหมาะสำหรับแจกนักเรียนที่นั่งติดกัน และเลือกกรอบตกแต่งได้</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
 <h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
-<h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 13 หมวด</li></ul></div></dialog>
+<h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 16 หมวด</li></ul></div></dialog>
 <dialog class="dlg" id="dlgPolicy" aria-labelledby="dlgPolicyT"><div class="dlg-h"><b id="dlgPolicyT">นโยบายความเป็นส่วนตัวและความปลอดภัยของข้อมูล</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b">
 <p><small>ปรับปรุงล่าสุด 15 พฤศจิกายน 2569</small></p>
 <p>ใบงานพร้อมพิมพ์เป็นเครื่องมือที่ทำงานในเบราว์เซอร์ของคุณทั้งหมด ไม่มีระบบสมาชิก และไม่มีเซิร์ฟเวอร์ของเราที่รับหรือเก็บข้อมูลที่คุณกรอก</p>
@@ -512,8 +515,8 @@ function buildTimes(){
   return { pages, key: keyParts };
 }
 
-const W_NAMES = ['มานี','ปิติ','ชูใจ','วีระ','ใบเตย','ต้นกล้า','น้ำใส','ภูผา'];
-const W_ITEMS = [['ส้ม','ผล'],['ดินสอ','แท่ง'],['ลูกอม','เม็ด'],['สมุด','เล่ม'],['ไข่ไก่','ฟอง'],['ลูกแก้ว','ลูก'],['ขนม','ชิ้น'],['ดอกไม้','ดอก']];
+const W_NAMES = ['มานี','ปิติ','ชูใจ','วีระ','ใบเตย','ต้นกล้า','น้ำใส','ภูผา','กานต์','ฝน','ข้าวหอม','ตะวัน'];
+const W_ITEMS = [['ส้ม','ผล'],['ดินสอ','แท่ง'],['ลูกอม','เม็ด'],['สมุด','เล่ม'],['ไข่ไก่','ฟอง'],['ลูกแก้ว','ลูก'],['ขนม','ชิ้น'],['ดอกไม้','ดอก'],['มะม่วง','ผล'],['ปากกา','ด้าม'],['สติกเกอร์','ดวง'],['ลูกโป่ง','ลูก']];
 const W_LEVELS = { 1:{max:20, a:[2,5], b:[2,5]}, 2:{max:100, a:[2,9], b:[2,10]}, 3:{max:1000, a:[2,12], b:[5,50]} };
 function wordProblems(){
   const r = rng(seed), L = W_LEVELS[$('wLevel').value];
@@ -650,6 +653,9 @@ const VOCAB = {
   number:'one = หนึ่ง\ntwo = สอง\nthree = สาม\nfour = สี่\nfive = ห้า\nsix = หก\nseven = เจ็ด\neight = แปด\nnine = เก้า\nten = สิบ',
   weather:'sunny = แดดออก\nrainy = ฝนตก\ncloudy = เมฆมาก\nwindy = ลมแรง\nhot = ร้อน\ncold = หนาว\nstorm = พายุ\nrainbow = รุ้ง',
   place:'school = โรงเรียน\nhospital = โรงพยาบาล\nmarket = ตลาด\ntemple = วัด\nhouse = บ้าน\npark = สวนสาธารณะ\nlibrary = ห้องสมุด\nfarm = ฟาร์ม\nbeach = ชายหาด\nairport = สนามบิน',
+  transport:'car = รถยนต์\nbus = รถประจำทาง\ntrain = รถไฟ\nbicycle = จักรยาน\nmotorcycle = รถจักรยานยนต์\nboat = เรือ\nairplane = เครื่องบิน\ntruck = รถบรรทุก\ntaxi = รถแท็กซี่\nambulance = รถพยาบาล',
+  home:'table = โต๊ะ\nbed = เตียง\ndoor = ประตู\nwindow = หน้าต่าง\nlamp = โคมไฟ\nfan = พัดลม\nclock = นาฬิกา\nmirror = กระจก\nspoon = ช้อน\nplate = จาน',
+  verb:'eat = กิน\ndrink = ดื่ม\nsleep = นอน\nrun = วิ่ง\nwalk = เดิน\nread = อ่าน\nwrite = เขียน\nsing = ร้องเพลง\nswim = ว่ายน้ำ\nplay = เล่น',
   school:'book = หนังสือ\npencil = ดินสอ\neraser = ยางลบ\nruler = ไม้บรรทัด\ndesk = โต๊ะเรียน\nchair = เก้าอี้\nbag = กระเป๋า\nboard = กระดาน\nteacher = ครู\nstudent = นักเรียน'
 };
 
