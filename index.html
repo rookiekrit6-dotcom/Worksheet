@@ -123,6 +123,13 @@ nav.tabs a{display:inline-flex;align-items:center;gap:7px}
 .types button:active{transform:translateY(3px);box-shadow:none}
 @media (prefers-reduced-motion:reduce){.btn,.types button{transition:none}}
 @media print{.btn{box-shadow:none}}
+
+/* word problems */
+.types button:last-child:nth-child(odd){grid-column:1/-1;flex-direction:row;gap:8px}
+.wp{display:grid;gap:6mm}
+.wp .q p{margin:0 0 1mm;font-size:14pt;line-height:1.5}
+.wp .work{height:9mm;border-bottom:1px dotted #555;font-size:11pt;color:#555;display:flex;align-items:flex-end}
+.wp .reply{margin-top:4mm;font-size:13pt;text-align:right}
 </style>
 </head>
 <body>
@@ -138,6 +145,7 @@ nav.tabs a{display:inline-flex;align-items:center;gap:7px}
     <button type="button" data-type="hand"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-5L16 4l4 4L9 19z"/></svg>คัดลายมือ</button>
     <button type="button" data-type="match"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h5M15 17h5M9 7c5 0 1 10 6 10"/><circle cx="4" cy="7" r=".6"/><circle cx="20" cy="17" r=".6"/></svg>จับคู่คำศัพท์</button>
     <button type="button" data-type="times"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16"/></svg>สูตรคูณ</button>
+    <button type="button" data-type="word"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>โจทย์ปัญหา</button>
   </div>
 
   <label class="f">ชื่อโรงเรียน<input type="text" id="school" value="โรงเรียนบ้านตัวอย่าง"></label>
@@ -196,6 +204,20 @@ rabbit = กระต่าย</textarea></label>
       <select id="tBlank"><option value="100">ทุกข้อ</option><option value="50" selected>ครึ่งหนึ่ง</option><option value="30">บางข้อ</option></select></label>
   </div>
 
+  <div class="opt" id="o-word">
+    <div class="checks" role="group" aria-label="ประเภทโจทย์">
+      <label><input type="checkbox" id="wAdd" checked> บวก</label>
+      <label><input type="checkbox" id="wSub" checked> ลบ</label>
+      <label><input type="checkbox" id="wMul"> คูณ</label>
+      <label><input type="checkbox" id="wDiv"> หาร</label>
+    </div>
+    <div class="two">
+      <label class="f">ระดับชั้น
+        <select id="wLevel"><option value="1">ป.1 (ไม่เกิน 20)</option><option value="2" selected>ป.2 (ไม่เกิน 100)</option><option value="3">ป.3 (ไม่เกิน 1,000)</option></select></label>
+      <label class="f">จำนวนข้อ<input type="number" id="wCount" min="2" max="12" value="4" inputmode="numeric"></label>
+    </div>
+  </div>
+
   <div class="checks"><label><input type="checkbox" id="withKey" checked> แนบหน้าเฉลย</label></div>
   <div class="row">
     <button type="button" class="btn" id="print"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5"/><rect x="3" y="8" width="18" height="9" rx="2"/><rect x="7" y="14" width="10" height="7"/></svg>พิมพ์ใบงาน</button>
@@ -221,7 +243,8 @@ const DEFAULTS = {
   math:{title:'ใบงานคณิตศาสตร์', inst:'ให้นักเรียนหาผลลัพธ์ของโจทย์ต่อไปนี้'},
   hand:{title:'แบบฝึกคัดลายมือ', inst:'ให้นักเรียนเขียนทับตัวอักษรสีจาง แล้วคัดเองในบรรทัดว่างด้วยตัวบรรจง'},
   match:{title:'ใบงานจับคู่คำศัพท์', inst:'ให้นักเรียนลากเส้นจับคู่คำศัพท์กับความหมายที่ถูกต้อง'},
-  times:{title:'ใบงานสูตรคูณ', inst:'ให้นักเรียนเติมผลคูณลงในช่องว่างให้ถูกต้อง'}
+  times:{title:'ใบงานสูตรคูณ', inst:'ให้นักเรียนเติมผลคูณลงในช่องว่างให้ถูกต้อง'},
+  word:{title:'ใบงานโจทย์ปัญหาคณิตศาสตร์', inst:'ให้นักเรียนอ่านโจทย์ แสดงวิธีทำ และเขียนคำตอบ'}
 };
 
 function rng(s){ let a = s >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -301,8 +324,43 @@ function buildTimes(){
   return { pages, key: keyParts };
 }
 
+const W_NAMES = ['มานี','ปิติ','ชูใจ','วีระ','ใบเตย','ต้นกล้า','น้ำใส','ภูผา'];
+const W_ITEMS = [['ส้ม','ผล'],['ดินสอ','แท่ง'],['ลูกอม','เม็ด'],['สมุด','เล่ม'],['ไข่ไก่','ฟอง'],['ลูกแก้ว','ลูก'],['ขนม','ชิ้น'],['ดอกไม้','ดอก']];
+const W_LEVELS = { 1:{max:20, a:[2,5], b:[2,5]}, 2:{max:100, a:[2,9], b:[2,10]}, 3:{max:1000, a:[2,12], b:[5,50]} };
+function wordProblems(){
+  const r = rng(seed), L = W_LEVELS[$('wLevel').value];
+  const ops = [['wAdd','+'],['wSub','−'],['wMul','×'],['wDiv','÷']].filter(o => $(o[0]).checked).map(o => o[1]);
+  if (!ops.length) ops.push('+');
+  const n = clamp(parseInt($('wCount').value) || 4, 2, 12), out = [], pick = arr => arr[Math.floor(r() * arr.length)];
+  for (let i = 0; i < n; i++){
+    const op = ops[i % ops.length], A = pick(W_NAMES); let B = pick(W_NAMES); while (B === A) B = pick(W_NAMES);
+    const [item, unit] = pick(W_ITEMS), alt = r() < .5; let text, expr, ans, au = unit;
+    if (op === '+'){ const a = ri(r, 1, L.max - 1), b = ri(r, 1, L.max - a); ans = a + b; expr = `${nf(a)} + ${nf(b)}`;
+      text = alt ? `${A}มี${item} ${nf(a)} ${unit} ${B}ให้มาอีก ${nf(b)} ${unit} ${A}มี${item}ทั้งหมดกี่${unit}`
+                 : `ร้านค้าขาย${item}ได้ ${nf(a)} ${unit}ในตอนเช้า และขายได้อีก ${nf(b)} ${unit}ในตอนบ่าย ร้านค้าขาย${item}ได้ทั้งหมดกี่${unit}`; }
+    else if (op === '−'){ const a = ri(r, 2, L.max), b = ri(r, 1, a - 1); ans = a - b; expr = `${nf(a)} − ${nf(b)}`;
+      if (alt) text = `${A}มี${item} ${nf(a)} ${unit} แบ่งให้${B} ${nf(b)} ${unit} ${A}เหลือ${item}กี่${unit}`;
+      else { text = `${A}มีเงิน ${nf(a)} บาท ซื้อ${item}ไป ${nf(b)} บาท ${A}เหลือเงินกี่บาท`; au = 'บาท'; } }
+    else { const x = ri(r, L.a[0], L.a[1]), y = ri(r, L.b[0], L.b[1]);
+      if (op === '×'){ ans = x * y; expr = `${nf(x)} × ${nf(y)}`;
+        if (alt) text = `${item} 1 ถุงมี ${nf(y)} ${unit} ${A}ซื้อมา ${nf(x)} ถุง ${A}มี${item}ทั้งหมดกี่${unit}`;
+        else { text = `${A}ออมเงินวันละ ${nf(y)} บาท เป็นเวลา ${nf(x)} วัน ${A}มีเงินออมทั้งหมดกี่บาท`; au = 'บาท'; } }
+      else { const total = x * y; ans = y; expr = `${nf(total)} ÷ ${nf(x)}`;
+        if (alt) text = `${A}มี${item} ${nf(total)} ${unit} แบ่งให้เพื่อน ${nf(x)} คน คนละเท่า ๆ กัน เพื่อนได้${item}คนละกี่${unit}`;
+        else { text = `ครูมี${item} ${nf(total)} ${unit} จัดใส่ถุง ถุงละ ${nf(x)} ${unit} ครูจัดได้ทั้งหมดกี่ถุง`; au = 'ถุง'; } } }
+    out.push({text, expr, ans, au});
+  }
+  return out;
+}
+function buildWord(){
+  const ps = wordProblems(); let idx = 0;
+  const pages = chunk(ps, 4, 5).map((c, pi) => page(`<div class="wp">${c.map(q => `<div class="q"><p><b>${++idx})</b> ${esc(q.text)}</p><div class="work">วิธีทำ</div><div class="work"></div><div class="reply">ตอบ ........................................ ${esc(q.au)}</div></div>`).join('')}</div>`, pi === 0));
+  const key = keyPage(`<div class="k-list" style="columns:1">${ps.map((q, i) => `<div>${i + 1}) ${q.expr} = <span class="ans">${nf(q.ans)} ${esc(q.au)}</span></div>`).join('')}</div>`);
+  return { pages, key };
+}
+
 /* ---------- render ---------- */
-const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes };
+const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord };
 function render(){
   const out = BUILD[type]();
   $('preview').innerHTML = out.pages.join('') + ($('withKey').checked && out.key ? out.key : '');
