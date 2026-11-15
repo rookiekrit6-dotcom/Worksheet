@@ -154,6 +154,9 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
 .ck .q{text-align:center;font-size:12.5pt}
 .ck svg{width:44mm;height:44mm;display:block;margin:0 auto 1mm}
 .ck .n{color:#666;font-size:10pt;display:block;text-align:left}
+
+/* comparing numbers */
+.m-h .circ{width:9mm;height:9mm;border:1.4px solid #111;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;margin:0 1mm -1.5mm}
 </style>
 </head>
 <body>
@@ -171,6 +174,7 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
     <button type="button" data-type="times"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16"/></svg>สูตรคูณ</button>
     <button type="button" data-type="word"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>โจทย์ปัญหา</button>
     <button type="button" data-type="clock"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>บอกเวลา</button>
+    <button type="button" data-type="cmp"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>เปรียบเทียบจำนวน</button>
   </div>
 
   <label class="f">ชื่อโรงเรียน<input type="text" id="school" value="โรงเรียนบ้านตัวอย่าง"></label>
@@ -221,12 +225,29 @@ elephant = ช้าง
 monkey = ลิง
 tiger = เสือ
 rabbit = กระต่าย</textarea></label>
+    <div class="row" role="group" aria-label="ชุดคำศัพท์สำเร็จรูป">
+      <button type="button" class="btn alt tiny" data-set="animal">สัตว์</button>
+      <button type="button" class="btn alt tiny" data-set="fruit">ผลไม้</button>
+      <button type="button" class="btn alt tiny" data-set="color">สี</button>
+      <button type="button" class="btn alt tiny" data-set="family">ครอบครัว</button>
+      <button type="button" class="btn alt tiny" data-set="day">วันในสัปดาห์</button>
+      <button type="button" class="btn alt tiny" data-set="body">ร่างกาย</button>
+      <button type="button" class="btn alt tiny" data-set="school">ของในห้องเรียน</button>
+    </div>
   </div>
 
   <div class="opt" id="o-times">
     <label class="f">แม่สูตรคูณ (คั่นด้วยจุลภาค)<input type="text" id="tables" value="2,3,4,5,6,7" inputmode="numeric"></label>
     <label class="f">ช่องที่เว้นให้เติม
       <select id="tBlank"><option value="100">ทุกข้อ</option><option value="50" selected>ครึ่งหนึ่ง</option><option value="30">บางข้อ</option></select></label>
+  </div>
+
+  <div class="opt" id="o-cmp">
+    <div class="two">
+      <label class="f">จำนวนไม่เกิน
+        <select id="pMax"><option value="20">20</option><option value="100" selected>100</option><option value="1000">1,000</option><option value="100000">100,000</option></select></label>
+      <label class="f">จำนวนข้อ<input type="number" id="pCount" min="6" max="60" value="20" inputmode="numeric"></label>
+    </div>
   </div>
 
   <div class="opt" id="o-clock">
@@ -264,9 +285,9 @@ rabbit = กระต่าย</textarea></label>
 
 </div></main>
 <footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span></footer>
-<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา หรือบอกเวลา</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
+<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา หรือเปรียบเทียบจำนวน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
 <h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
-<h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว</li></ul></div></dialog>
+<h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 7 หมวด</li></ul></div></dialog>
 <dialog class="dlg" id="dlgPolicy" aria-labelledby="dlgPolicyT"><div class="dlg-h"><b id="dlgPolicyT">นโยบายความเป็นส่วนตัวและความปลอดภัยของข้อมูล</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b">
 <p><small>ปรับปรุงล่าสุด 15 พฤศจิกายน 2569</small></p>
 <p>ใบงานพร้อมพิมพ์เป็นเครื่องมือที่ทำงานในเบราว์เซอร์ของคุณทั้งหมด ไม่มีระบบสมาชิก และไม่มีเซิร์ฟเวอร์ของเราที่รับหรือเก็บข้อมูลที่คุณกรอก</p>
@@ -296,6 +317,7 @@ const DEFAULTS = {
   hand:{title:'แบบฝึกคัดลายมือ', inst:'ให้นักเรียนเขียนทับตัวอักษรสีจาง แล้วคัดเองในบรรทัดว่างด้วยตัวบรรจง'},
   match:{title:'ใบงานจับคู่คำศัพท์', inst:'ให้นักเรียนลากเส้นจับคู่คำศัพท์กับความหมายที่ถูกต้อง'},
   times:{title:'ใบงานสูตรคูณ', inst:'ให้นักเรียนเติมผลคูณลงในช่องว่างให้ถูกต้อง'},
+  cmp:{title:'ใบงานเปรียบเทียบจำนวน', inst:'ให้นักเรียนเติมเครื่องหมาย > < หรือ = ลงในวงกลม'},
   clock:{title:'ใบงานบอกเวลา', inst:'ให้นักเรียนดูหน้าปัดนาฬิกา แล้วเขียนเวลาให้ถูกต้อง'},
   word:{title:'ใบงานโจทย์ปัญหาคณิตศาสตร์', inst:'ให้นักเรียนอ่านโจทย์ แสดงวิธีทำ และเขียนคำตอบ'}
 };
@@ -432,8 +454,27 @@ function buildClock(){
   return { pages, key };
 }
 
+function buildCmp(){
+  const r = rng(seed), max = +$('pMax').value, n = clamp(parseInt($('pCount').value) || 20, 6, 60), ps = [];
+  for (let i = 0; i < n; i++){ const a = ri(r, 1, max), b = r() < .12 ? a : ri(r, 1, max); ps.push([a, b, a > b ? '>' : a < b ? '<' : '=']); }
+  const item = (q, i, key) => `<div><span class="n">${i + 1})</span><span>${nf(q[0])}</span><span class="circ${key ? ' ans' : ''}">${key ? q[2] : ''}</span><span>${nf(q[1])}</span></div>`;
+  let idx = 0;
+  const pages = chunk(ps, 28, 34).map((c, pi) => page(`<div class="m-h">${c.map(q => item(q, idx++, false)).join('')}</div>`, pi === 0));
+  const key = keyPage(`<div class="k-list">${ps.map((q, i) => `<div>${i + 1}) ${nf(q[0])} <span class="ans">${q[2]}</span> ${nf(q[1])}</div>`).join('')}</div>`);
+  return { pages, key };
+}
+const VOCAB = {
+  animal:'cat = แมว\ndog = สุนัข\nbird = นก\nfish = ปลา\nelephant = ช้าง\nmonkey = ลิง\ntiger = เสือ\nrabbit = กระต่าย\ncow = วัว\nduck = เป็ด',
+  fruit:'banana = กล้วย\nmango = มะม่วง\norange = ส้ม\nwatermelon = แตงโม\npineapple = สับปะรด\npapaya = มะละกอ\ngrape = องุ่น\ncoconut = มะพร้าว\napple = แอปเปิล\nguava = ฝรั่ง',
+  color:'red = สีแดง\nblue = สีน้ำเงิน\nyellow = สีเหลือง\ngreen = สีเขียว\nblack = สีดำ\nwhite = สีขาว\npink = สีชมพู\norange = สีส้ม\npurple = สีม่วง\nbrown = สีน้ำตาล',
+  family:'father = พ่อ\nmother = แม่\nbrother = พี่ชายหรือน้องชาย\nsister = พี่สาวหรือน้องสาว\ngrandfather = ปู่หรือตา\ngrandmother = ย่าหรือยาย\nuncle = ลุงหรืออา\naunt = ป้าหรือน้า\nbaby = ทารก\nfriend = เพื่อน',
+  day:'Sunday = วันอาทิตย์\nMonday = วันจันทร์\nTuesday = วันอังคาร\nWednesday = วันพุธ\nThursday = วันพฤหัสบดี\nFriday = วันศุกร์\nSaturday = วันเสาร์',
+  body:'head = ศีรษะ\neye = ตา\near = หู\nnose = จมูก\nmouth = ปาก\nhand = มือ\narm = แขน\nleg = ขา\nfoot = เท้า\ntooth = ฟัน',
+  school:'book = หนังสือ\npencil = ดินสอ\neraser = ยางลบ\nruler = ไม้บรรทัด\ndesk = โต๊ะเรียน\nchair = เก้าอี้\nbag = กระเป๋า\nboard = กระดาน\nteacher = ครู\nstudent = นักเรียน'
+};
+
 /* ---------- render ---------- */
-const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock };
+const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock, cmp:buildCmp };
 function render(){
   const out = BUILD[type]();
   $('preview').innerHTML = out.pages.join('') + ($('withKey').checked && out.key ? out.key : '');
@@ -462,7 +503,8 @@ const FILL = {
 };
 document.querySelector('.types').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setType(b.dataset.type); });
 $('panel').addEventListener('input', render);
-$('panel').addEventListener('click', e => { const b = e.target.closest('[data-fill]'); if (b){ $('hText').value = FILL[b.dataset.fill]; render(); } });
+$('panel').addEventListener('click', e => { const b = e.target.closest('[data-fill]'); if (b){ $('hText').value = FILL[b.dataset.fill]; render(); }
+  const v = e.target.closest('[data-set]'); if (v){ $('pairs').value = VOCAB[v.dataset.set]; render(); } });
 $('reroll').addEventListener('click', () => { seed = (Math.random() * 2 ** 31) | 0; render(); });
 $('print').addEventListener('click', () => window.print());
 addEventListener('resize', fit);
