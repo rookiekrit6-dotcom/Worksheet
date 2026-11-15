@@ -171,6 +171,14 @@ dialog.dlg::backdrop{background:rgba(10,20,18,.5)}
 .fb{display:inline-grid;vertical-align:middle;margin-left:2mm}
 .fb i{width:10mm;height:8mm;border:1.2px dashed #111;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:13pt}
 .fb i+i{border-top:2px solid #111}
+
+/* sets and frames */
+.page{position:relative}
+.page::before{content:"";position:absolute;inset:6mm;pointer-events:none}
+.page.f-double::before{border:3.5px double #111}
+.page.f-dash::before{border:2px dashed #111;border-radius:4mm}
+.page.f-round::before{border:2.5px solid #111;border-radius:8mm}
+.ws-head .set{display:inline-block;margin-left:3mm;padding:0 3mm;border:1.5px solid #111;border-radius:99px;font-family:var(--f-body);font-size:11pt;font-weight:600;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -310,6 +318,12 @@ rabbit = กระต่าย</textarea></label>
     </div>
   </div>
 
+  <div class="two">
+    <label class="f">จำนวนชุดที่โจทย์ไม่ซ้ำกัน
+      <select id="vers"><option value="1">1 ชุด</option><option value="2">2 ชุด</option><option value="3">3 ชุด</option><option value="4">4 ชุด</option><option value="5">5 ชุด</option><option value="6">6 ชุด</option></select></label>
+    <label class="f">กรอบตกแต่ง
+      <select id="frame"><option value="">ไม่มี</option><option value="f-double">เส้นคู่</option><option value="f-dash">เส้นประ</option><option value="f-round">ขอบมน</option></select></label>
+  </div>
   <div class="checks"><label><input type="checkbox" id="withKey" checked> แนบหน้าเฉลย</label></div>
   <div class="row">
     <button type="button" class="btn" id="print"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5"/><rect x="3" y="8" width="18" height="9" rx="2"/><rect x="7" y="14" width="10" height="7"/></svg>พิมพ์ใบงาน</button>
@@ -323,7 +337,7 @@ rabbit = กระต่าย</textarea></label>
 
 </div></main>
 <footer class="site-ft"><button type="button" data-open="dlgGuide">วิธีใช้</button><button type="button" data-open="dlgPolicy">นโยบายความเป็นส่วนตัวและความปลอดภัย</button><a href="https://github.com/rookiekrit6-dotcom/Worksheet/issues">แจ้งปัญหาหรือเสนอแนะ</a><span>ใช้ฟรี ไม่ต้องสมัครสมาชิก</span></footer>
-<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน แบบรูปจำนวน หรือเศษส่วน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
+<dialog class="dlg" id="dlgGuide" aria-labelledby="dlgGuideT"><div class="dlg-h"><b id="dlgGuideT">วิธีใช้ ใบงานพร้อมพิมพ์</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b"><h3>สร้างใบงาน</h3><ol><li>เลือกประเภทใบงาน: บวก ลบ คูณ หาร, คัดลายมือ, จับคู่คำศัพท์, สูตรคูณ โจทย์ปัญหา บอกเวลา เปรียบเทียบจำนวน แบบรูปจำนวน หรือเศษส่วน</li><li>แก้ชื่อโรงเรียน ชื่อใบงาน และคำชี้แจงตามต้องการ</li><li>ตั้งค่าระดับชั้น จำนวนข้อ หรือพิมพ์เนื้อหาของคุณเอง ตัวอย่างด้านขวาจะเปลี่ยนตามทันที</li><li>ถ้าอยากได้โจทย์ชุดใหม่ กดสุ่มโจทย์ใหม่</li><li>เลือกจำนวนชุดได้ถึง 6 ชุดที่โจทย์ไม่ซ้ำกัน เหมาะสำหรับแจกนักเรียนที่นั่งติดกัน และเลือกกรอบตกแต่งได้</li><li>ติ๊กแนบหน้าเฉลย ถ้าต้องการเฉลยสำหรับครู</li></ol>
 <h3>พิมพ์หรือบันทึกเป็น PDF</h3><ol><li>กดพิมพ์ใบงาน</li><li>เลือกขนาดกระดาษ A4 ตั้งขอบกระดาษเป็น "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์</li><li>ถ้าต้องการไฟล์ ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</li></ol>
 <h3>ข้อแนะนำ</h3><ul><li>ตรวจโจทย์และเฉลยอีกครั้งก่อนแจกนักเรียน</li><li>ใบงานจับคู่ ให้พิมพ์คำศัพท์บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย = เช่น cat = แมว หรือกดเลือกชุดคำศัพท์สำเร็จรูป 7 หมวด</li></ul></div></dialog>
 <dialog class="dlg" id="dlgPolicy" aria-labelledby="dlgPolicyT"><div class="dlg-h"><b id="dlgPolicyT">นโยบายความเป็นส่วนตัวและความปลอดภัยของข้อมูล</b><button class="dlg-x" type="button" data-close>ปิด</button></div><div class="dlg-b">
@@ -388,12 +402,12 @@ function mathProblems(){
 function chunk(arr, first, rest){ const pages = [arr.slice(0, first)]; for (let i = first; i < arr.length; i += rest) pages.push(arr.slice(i, i + rest)); return pages; }
 
 function head(){
-  return `<div class="ws-head"><div class="school">${esc($('school').value)}</div><div class="title">${esc($('title').value)}</div>
+  return `<div class="ws-head"><div class="school">${esc($('school').value)}</div><div class="title">${esc($('title').value)}${curSet ? `<span class="set">ชุดที่ ${curSet}</span>` : ''}</div>
   <div class="meta"><span class="nm">ชื่อ-สกุล ......................................................................................</span><span>ชั้น ............ เลขที่ ............</span><span class="score">คะแนน ......... / .........</span></div></div>
   <p class="ws-inst"><b>คำชี้แจง</b> ${esc($('inst').value)}</p>`;
 }
 const page = (inner, first) => `<div class="page">${first ? head() : ''}${inner}</div>`;
-const keyPage = inner => `<div class="page"><div class="key-title">เฉลย: ${esc($('title').value)}</div>${inner}</div>`;
+const keyPage = inner => `<div class="page"><div class="key-title">เฉลย: ${esc($('title').value)}${curSet ? ' ชุดที่ ' + curSet : ''}</div>${inner}</div>`;
 
 function buildMath(){
   const ps = mathProblems(), vert = $('mLayout').value === 'v';
@@ -553,11 +567,15 @@ const VOCAB = {
 
 /* ---------- render ---------- */
 const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes, word:buildWord, clock:buildClock, cmp:buildCmp, seq:buildSeq, frac:buildFrac };
+let curSet = 0;
 function render(){
-  const out = BUILD[type]();
-  $('preview').innerHTML = out.pages.join('') + ($('withKey').checked && out.key ? out.key : '');
+  const sets = clamp(parseInt($('vers').value) || 1, 1, 6), base = seed, sheets = [], keys = [];
+  for (let k = 0; k < sets; k++){ seed = (base + k * 7919) | 0; curSet = sets > 1 ? k + 1 : 0; const out = BUILD[type](); sheets.push(out.pages.join('')); if (out.key) keys.push(out.key); }
+  seed = base; curSet = 0;
+  $('preview').innerHTML = sheets.join('') + ($('withKey').checked ? keys.join('') : '');
+  const fr = $('frame').value; if (fr) document.querySelectorAll('#preview .page').forEach(pg => pg.classList.add(fr));
   const n = $('preview').children.length;
-  $('pageInfo').textContent = 'ใบงานนี้มี ' + n + ' หน้า' + (type === 'hand' ? ' (คัดลายมือไม่มีหน้าเฉลย)' : '');
+  $('pageInfo').textContent = 'ใบงานนี้มี ' + n + ' หน้า' + (sets > 1 ? ' รวม ' + sets + ' ชุด หน้าเฉลยอยู่ท้ายสุด' : '') + (type === 'hand' ? ' (คัดลายมือไม่มีหน้าเฉลย)' : '');
   fit();
 }
 function fit(){
