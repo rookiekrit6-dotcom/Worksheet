@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ใบงานพร้อมพิมพ์</title>
+<meta name="description" content="สร้างใบงานคณิตศาสตร์ คัดลายมือ จับคู่คำศัพท์ และสูตรคูณ พร้อมเฉลย พิมพ์ลง A4 ได้ทันที ใช้ฟรีสำหรับครูและผู้ปกครอง">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;700&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* layout: controls column + live A4 preview; preview pages are real mm-sized sheets zoomed to fit the screen */
+:root{
+  --ink:#1b2440; --ink-soft:#5a6480; --desk:#e6eaf3; --card:#ffffff; --line:#cfd6e6;
+  --brand:#24408e; --brand-ink:#ffffff; --pencil:#d8412f; --trace:#c3c9d6;
+  --f-head:"Mali","Sarabun",sans-serif; --f-body:"Sarabun","Noto Sans Thai",Tahoma,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--desk);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+header.top{background:var(--brand);color:var(--brand-ink);padding:16px;border-bottom:4px solid var(--pencil)}
+.wrap{max-width:1180px;margin:0 auto}
+h1{margin:0;font-family:var(--f-head);font-size:1.5rem}
+.sub{margin:2px 0 0;opacity:.9;font-size:.95rem}
+main{padding:16px 16px 48px}
+.layout{display:grid;gap:16px}
+@media(min-width:900px){.layout{grid-template-columns:340px minmax(0,1fr);align-items:start}.panel{position:sticky;top:12px}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:14px}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.types button{font:inherit;font-weight:600;padding:10px 8px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.types button[aria-pressed="true"]{border-color:var(--brand);background:var(--brand);color:#fff}
+label.f{display:grid;gap:4px;font-size:.9rem;color:var(--ink-soft)}
+input,select,textarea,button{font:inherit;color:inherit}
+input[type=text],input[type=number],select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+:is(input,select,textarea,button):focus-visible{outline:3px solid var(--pencil);outline-offset:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checks{display:flex;flex-wrap:wrap;gap:8px 14px}
+.checks label{display:flex;gap:6px;align-items:center;font-size:.95rem;color:var(--ink)}
+.opt{display:none;gap:12px}
+.opt.on{display:grid}
+.btn{border:0;border-radius:10px;padding:11px 16px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer}
+.btn.alt{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+.btn.tiny{padding:5px 10px;font-size:.85rem;font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.note{font-size:.85rem;color:var(--ink-soft);margin:0}
+#preview{display:grid;gap:16px;justify-items:start;overflow:hidden}
+.page{width:210mm;height:297mm;padding:14mm 15mm;background:#fff;color:#111;box-shadow:0 2px 10px rgba(27,36,64,.18);font-family:var(--f-body);font-size:13pt;overflow:hidden;display:flex;flex-direction:column}
+.ws-head{border-bottom:2px solid #111;padding-bottom:3mm;margin-bottom:5mm}
+.ws-head .school{font-size:11pt}
+.ws-head .title{font-family:var(--f-head);font-size:20pt;font-weight:700;line-height:1.2}
+.ws-head .meta{display:flex;justify-content:space-between;gap:6mm;margin-top:3mm;font-size:12pt}
+.ws-head .meta span{white-space:nowrap;flex:none}
+.ws-head .meta .nm{flex:1;min-width:0;overflow:hidden}
+.ws-head .score{border:1.5px solid #111;padding:1mm 4mm}
+.ws-inst{margin:0 0 5mm;font-size:13pt}
+.key-title{font-family:var(--f-head);font-size:16pt;font-weight:700;color:var(--pencil);margin-bottom:5mm}
+/* math */
+.m-h{display:grid;grid-template-columns:1fr 1fr;column-gap:12mm}
+.m-h div{height:13.5mm;display:flex;align-items:flex-end;gap:3mm;font-size:16pt;font-variant-numeric:tabular-nums}
+.m-h .n{color:#666;font-size:11pt;width:9mm}
+.m-h .blank{flex:1;border-bottom:1px solid #111;max-width:30mm;height:1em}
+.m-v{display:grid;grid-template-columns:repeat(4,1fr);gap:9mm 8mm}
+.m-v .q{display:grid;grid-template-columns:auto 1fr;font-size:17pt;font-variant-numeric:tabular-nums;line-height:1.35;height:38mm;align-content:start}
+.m-v .n{grid-column:1/-1;color:#666;font-size:10pt}
+.m-v .a,.m-v .b{grid-column:2;text-align:right}
+.m-v .op{grid-column:1;grid-row:3}
+.m-v .ln{grid-column:1/-1;border-top:1.5px solid #111;margin-top:1mm}
+/* handwriting */
+.hw{display:grid;gap:5mm}
+.hw .ln{height:17mm;border-top:1px solid #333;border-bottom:1px solid #333;position:relative;font-size:10.5mm;line-height:17mm;color:var(--trace);white-space:nowrap;overflow:hidden;letter-spacing:.12em;font-weight:300}
+.hw .ln::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dashed #9aa3b5}
+/* matching */
+.mt{display:grid;gap:0}
+.mt .r{display:grid;grid-template-columns:1fr 34mm 1fr;align-items:center;height:16mm;font-size:15pt}
+.mt .l{display:flex;justify-content:space-between;gap:3mm}
+.mt .rt{display:flex;gap:3mm}
+.mt .dot{width:2.2mm;height:2.2mm;border-radius:50%;background:#111;flex:none;align-self:center}
+.mt .n{color:#666;margin-right:2mm}
+/* times table */
+.tt{display:grid;grid-template-columns:repeat(3,1fr);gap:8mm 10mm}
+.tt .blk{border:1.5px solid #111;border-radius:2mm;padding:3mm 4mm}
+.tt .blk b{display:block;font-family:var(--f-head);font-size:13pt;margin-bottom:1mm}
+.tt .blk div{font-size:13pt;height:7.2mm;display:flex;gap:2mm;align-items:flex-end;font-variant-numeric:tabular-nums}
+.tt .blank{display:inline-block;width:14mm;border-bottom:1px solid #111;height:1em}
+.ans{color:var(--pencil);font-weight:700}
+.k-list{columns:4;column-gap:8mm;font-size:12pt;font-variant-numeric:tabular-nums}
+.k-list div{break-inside:avoid;padding:.6mm 0}
+@page{size:A4;margin:0}
+@media print{
+  body{background:#fff}
+  header.top,.panel{display:none}
+  main{padding:0}
+  .layout{display:block}
+  #preview{display:block;zoom:1 !important;overflow:visible}
+  .page{box-shadow:none;page-break-after:always;break-after:page}
+  .page:last-child{page-break-after:auto;break-after:auto}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>ใบงานพร้อมพิมพ์</h1>
+  <p class="sub">เลือกแบบ ตั้งค่า แล้วพิมพ์ลง A4 ได้ทันที มีเฉลยให้ครู</p>
+</div></header>
+<main><div class="wrap layout">
+
+<form class="panel" id="panel" autocomplete="off">
+  <div class="types" role="group" aria-label="ประเภทใบงาน">
+    <button type="button" data-type="math">บวก ลบ คูณ หาร</button>
+    <button type="button" data-type="hand">คัดลายมือ</button>
+    <button type="button" data-type="match">จับคู่คำศัพท์</button>
+    <button type="button" data-type="times">สูตรคูณ</button>
+  </div>
+
+  <label class="f">ชื่อโรงเรียน<input type="text" id="school" value="โรงเรียนบ้านตัวอย่าง"></label>
+  <label class="f">ชื่อใบงาน<input type="text" id="title"></label>
+  <label class="f">คำชี้แจง<input type="text" id="inst"></label>
+
+  <div class="opt" id="o-math">
+    <div class="checks" role="group" aria-label="เครื่องหมาย">
+      <label><input type="checkbox" id="opAdd" checked> บวก</label>
+      <label><input type="checkbox" id="opSub" checked> ลบ</label>
+      <label><input type="checkbox" id="opMul"> คูณ</label>
+      <label><input type="checkbox" id="opDiv"> หาร</label>
+    </div>
+    <div class="two">
+      <label class="f">ระดับชั้น
+        <select id="level">
+          <option value="1">ป.1 (ไม่เกิน 20)</option><option value="2" selected>ป.2 (ไม่เกิน 100)</option><option value="3">ป.3 (ไม่เกิน 1,000)</option>
+          <option value="4">ป.4 (ไม่เกิน 10,000)</option><option value="5">ป.5 (ไม่เกิน 100,000)</option><option value="6">ป.6 (ไม่เกิน 1,000,000)</option>
+        </select></label>
+      <label class="f">จำนวนข้อ<input type="number" id="count" min="4" max="80" value="20" inputmode="numeric"></label>
+    </div>
+    <label class="f">รูปแบบโจทย์
+      <select id="mLayout"><option value="h">แนวนอน เช่น 12 + 7 = ___</option><option value="v">แนวตั้ง ตั้งหลักคิดเลข</option></select></label>
+  </div>
+
+  <div class="opt" id="o-hand">
+    <label class="f">ข้อความที่ให้คัด (1 บรรทัดในช่อง = 1 บรรทัดในใบงาน)
+      <textarea id="hText">ก ข ค ง จ ฉ ช ซ
+มานี มีตา
+ฉันรักโรงเรียน</textarea></label>
+    <div class="row">
+      <button type="button" class="btn alt tiny" data-fill="th">ก ถึง ฮ</button>
+      <button type="button" class="btn alt tiny" data-fill="AZ">A ถึง Z</button>
+      <button type="button" class="btn alt tiny" data-fill="az">a ถึง z</button>
+      <button type="button" class="btn alt tiny" data-fill="num">๐ ถึง ๙</button>
+    </div>
+    <label class="f">บรรทัดว่างให้เขียนเอง ต่อจากแต่ละบรรทัด
+      <select id="hBlank"><option value="0">ไม่มี</option><option value="1" selected>1 บรรทัด</option><option value="2">2 บรรทัด</option></select></label>
+  </div>
+
+  <div class="opt" id="o-match">
+    <label class="f">คู่คำศัพท์ บรรทัดละ 1 คู่ คั่นด้วยเครื่องหมาย =
+      <textarea id="pairs">cat = แมว
+dog = สุนัข
+bird = นก
+fish = ปลา
+elephant = ช้าง
+monkey = ลิง
+tiger = เสือ
+rabbit = กระต่าย</textarea></label>
+  </div>
+
+  <div class="opt" id="o-times">
+    <label class="f">แม่สูตรคูณ (คั่นด้วยจุลภาค)<input type="text" id="tables" value="2,3,4,5,6,7" inputmode="numeric"></label>
+    <label class="f">ช่องที่เว้นให้เติม
+      <select id="tBlank"><option value="100">ทุกข้อ</option><option value="50" selected>ครึ่งหนึ่ง</option><option value="30">บางข้อ</option></select></label>
+  </div>
+
+  <div class="checks"><label><input type="checkbox" id="withKey" checked> แนบหน้าเฉลย</label></div>
+  <div class="row">
+    <button type="button" class="btn" id="print">พิมพ์ใบงาน</button>
+    <button type="button" class="btn alt" id="reroll">สุ่มโจทย์ใหม่</button>
+  </div>
+  <p class="note" id="pageInfo"></p>
+  <p class="note">ตอนพิมพ์ให้เลือกกระดาษ A4 ขอบกระดาษ "ไม่มี" และปิดหัวกระดาษท้ายกระดาษของเบราว์เซอร์ ถ้าต้องการไฟล์ PDF ให้เลือกปลายทางเป็น "บันทึกเป็น PDF"</p>
+</form>
+
+<div id="preview" aria-label="ตัวอย่างใบงาน"></div>
+
+</div></main>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf = n => n.toLocaleString('en-US');
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+let type = 'math', seed = 20261115;
+const DEFAULTS = {
+  math:{title:'ใบงานคณิตศาสตร์', inst:'ให้นักเรียนหาผลลัพธ์ของโจทย์ต่อไปนี้'},
+  hand:{title:'แบบฝึกคัดลายมือ', inst:'ให้นักเรียนเขียนทับตัวอักษรสีจาง แล้วคัดเองในบรรทัดว่างด้วยตัวบรรจง'},
+  match:{title:'ใบงานจับคู่คำศัพท์', inst:'ให้นักเรียนลากเส้นจับคู่คำศัพท์กับความหมายที่ถูกต้อง'},
+  times:{title:'ใบงานสูตรคูณ', inst:'ให้นักเรียนเติมผลคูณลงในช่องว่างให้ถูกต้อง'}
+};
+
+function rng(s){ let a = s >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const ri = (r, lo, hi) => lo + Math.floor(r() * (hi - lo + 1));
+function shuffle(arr, r){ const a = arr.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+/* ---------- generators ---------- */
+const LEVELS = { 1:{max:20, a:[1,5], b:[1,5]}, 2:{max:100, a:[2,5], b:[1,10]}, 3:{max:1000, a:[2,12], b:[1,12]},
+                 4:{max:10000, a:[10,99], b:[2,9]}, 5:{max:100000, a:[10,99], b:[10,99]}, 6:{max:1000000, a:[100,999], b:[10,99]} };
+function mathProblems(){
+  const r = rng(seed), L = LEVELS[$('level').value];
+  const ops = [['opAdd','+'],['opSub','−'],['opMul','×'],['opDiv','÷']].filter(o => $(o[0]).checked).map(o => o[1]);
+  if (!ops.length) ops.push('+');
+  const n = clamp(parseInt($('count').value) || 20, 4, 80), out = [];
+  for (let i = 0; i < n; i++){
+    const op = ops[i % ops.length]; let a, b, ans;
+    if (op === '+'){ a = ri(r, 1, L.max - 1); b = ri(r, 1, L.max - a); ans = a + b; }
+    else if (op === '−'){ a = ri(r, 1, L.max); b = ri(r, 0, a); ans = a - b; }
+    else { const x = ri(r, L.a[0], L.a[1]), y = ri(r, L.b[0], L.b[1]);
+      if (op === '×'){ a = x; b = y; ans = x * y; }
+      else { const d = +$('level').value >= 4 ? y : x; a = x * y; b = d; ans = a / d; } }
+    out.push({a, b, op, ans});
+  }
+  return shuffle(out, r);
+}
+function chunk(arr, first, rest){ const pages = [arr.slice(0, first)]; for (let i = first; i < arr.length; i += rest) pages.push(arr.slice(i, i + rest)); return pages; }
+
+function head(){
+  return `<div class="ws-head"><div class="school">${esc($('school').value)}</div><div class="title">${esc($('title').value)}</div>
+  <div class="meta"><span class="nm">ชื่อ-สกุล ......................................................................................</span><span>ชั้น ............ เลขที่ ............</span><span class="score">คะแนน ......... / .........</span></div></div>
+  <p class="ws-inst"><b>คำชี้แจง</b> ${esc($('inst').value)}</p>`;
+}
+const page = (inner, first) => `<div class="page">${first ? head() : ''}${inner}</div>`;
+const keyPage = inner => `<div class="page"><div class="key-title">เฉลย: ${esc($('title').value)}</div>${inner}</div>`;
+
+function buildMath(){
+  const ps = mathProblems(), vert = $('mLayout').value === 'v';
+  const item = (p, i, key) => vert
+    ? `<div class="q"><span class="n">${i + 1})</span><span class="a">${nf(p.a)}</span><span class="op">${p.op}</span><span class="b">${nf(p.b)}</span><span class="ln"></span>${key ? `<span class="a ans">${nf(p.ans)}</span>` : ''}</div>`
+    : `<div><span class="n">${i + 1})</span><span>${nf(p.a)} ${p.op} ${nf(p.b)} =</span>${key ? `<span class="ans">${nf(p.ans)}</span>` : '<span class="blank"></span>'}</div>`;
+  const per = vert ? [16, 20] : [28, 34];
+  let idx = 0;
+  const pages = chunk(ps, per[0], per[1]).map((c, pi) => page(`<div class="${vert ? 'm-v' : 'm-h'}">${c.map(p => item(p, idx++)).join('')}</div>`, pi === 0));
+  const key = keyPage(`<div class="k-list">${ps.map((p, i) => `<div>${i + 1}) ${nf(p.a)} ${p.op} ${nf(p.b)} = <span class="ans">${nf(p.ans)}</span></div>`).join('')}</div>`);
+  return { pages, key };
+}
+function buildHand(){
+  const blank = +$('hBlank').value, rows = [];
+  $('hText').value.split('\n').map(s => s.trim()).filter(Boolean).forEach(t => { rows.push(t); for (let i = 0; i < blank; i++) rows.push(''); });
+  if (!rows.length) rows.push('');
+  const pages = chunk(rows, 9, 11).map((c, pi) => page(`<div class="hw">${c.map(t => `<div class="ln">${esc(t)}</div>`).join('')}</div>`, pi === 0));
+  return { pages, key: null };
+}
+const TH_LABEL = 'กขคงจฉชซดตถทนบปผฝพฟมยรลวสหอฮ';
+function buildMatch(){
+  const r = rng(seed);
+  const pairs = $('pairs').value.split('\n').map(s => s.split('=')).filter(p => p.length >= 2 && p[0].trim() && p[1].trim()).map(p => [p[0].trim(), p.slice(1).join('=').trim()]).slice(0, 24);
+  if (!pairs.length) return { pages:[page('<p>ยังไม่มีคู่คำศัพท์ กรุณาพิมพ์ในช่องด้านซ้าย เช่น cat = แมว</p>', true)], key:null };
+  const pages = [], keys = [];
+  chunk(pairs, 12, 14).forEach((c, pi) => {
+    const order = shuffle(c.map((_, i) => i), r);
+    const base = pi === 0 ? 0 : 12 + (pi - 1) * 14;
+    pages.push(page(`<div class="mt">${c.map((p, i) => `<div class="r"><div class="l"><span><span class="n">${base + i + 1})</span>${esc(p[0])}</span><span class="dot"></span></div><div></div><div class="rt"><span class="dot"></span><span><span class="n">${TH_LABEL[i]}.</span>${esc(c[order[i]][1])}</span></div></div>`).join('')}</div>`, pi === 0));
+    c.forEach((p, i) => keys.push(`<div>${base + i + 1}) ${esc(p[0])} = <span class="ans">${TH_LABEL[order.indexOf(i)]}. ${esc(p[1])}</span></div>`));
+  });
+  return { pages, key: keyPage(`<div class="k-list" style="columns:2">${keys.join('')}</div>`) };
+}
+function buildTimes(){
+  const r = rng(seed), pct = +$('tBlank').value;
+  let tabs = $('tables').value.split(/[^\d]+/).map(Number).filter(n => n >= 1 && n <= 99).slice(0, 18);
+  if (!tabs.length) tabs = [2];
+  const block = (t, key) => { let h = `<div class="blk"><b>แม่ ${t}</b>`;
+    for (let i = 1; i <= 12; i++){ const hide = r() * 100 < pct; h += `<div>${t} × ${i} = ${key ? `<span class="ans">${t * i}</span>` : hide ? '<span class="blank"></span>' : t * i}</div>`; }
+    return h + '</div>'; };
+  const pages = chunk(tabs, 6, 6).map((c, pi) => page(`<div class="tt">${c.map(t => block(t, false)).join('')}</div>`, pi === 0));
+  const keyParts = chunk(tabs, 6, 6).map(c => keyPage(`<div class="tt">${c.map(t => block(t, true)).join('')}</div>`)).join('');
+  return { pages, key: keyParts };
+}
+
+/* ---------- render ---------- */
+const BUILD = { math:buildMath, hand:buildHand, match:buildMatch, times:buildTimes };
+function render(){
+  const out = BUILD[type]();
+  $('preview').innerHTML = out.pages.join('') + ($('withKey').checked && out.key ? out.key : '');
+  const n = $('preview').children.length;
+  $('pageInfo').textContent = 'ใบงานนี้มี ' + n + ' หน้า' + (type === 'hand' ? ' (คัดลายมือไม่มีหน้าเฉลย)' : '');
+  fit();
+}
+function fit(){
+  const p = $('preview'); p.style.zoom = 1;
+  const pg = p.firstElementChild; if (!pg) return;
+  const avail = p.parentElement.clientWidth - (matchMedia('(min-width:900px)').matches ? 356 : 0);
+  p.style.zoom = Math.min(1, avail / pg.offsetWidth);
+}
+function setType(t){
+  type = t;
+  document.querySelectorAll('.types button').forEach(b => b.setAttribute('aria-pressed', b.dataset.type === t));
+  document.querySelectorAll('.opt').forEach(o => o.classList.toggle('on', o.id === 'o-' + t));
+  $('title').value = DEFAULTS[t].title; $('inst').value = DEFAULTS[t].inst;
+  render();
+}
+const FILL = {
+  th:'ก ข ค ฆ ง จ ฉ ช ซ ฌ ญ\nฎ ฏ ฐ ฑ ฒ ณ ด ต ถ ท ธ\nน บ ป ผ ฝ พ ฟ ภ ม ย ร\nล ว ศ ษ ส ห ฬ อ ฮ',
+  AZ:'A B C D E F G H I\nJ K L M N O P Q R\nS T U V W X Y Z',
+  az:'a b c d e f g h i\nj k l m n o p q r\ns t u v w x y z',
+  num:'๐ ๑ ๒ ๓ ๔ ๕ ๖ ๗ ๘ ๙\n0 1 2 3 4 5 6 7 8 9'
+};
+document.querySelector('.types').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setType(b.dataset.type); });
+$('panel').addEventListener('input', render);
+$('panel').addEventListener('click', e => { const b = e.target.closest('[data-fill]'); if (b){ $('hText').value = FILL[b.dataset.fill]; render(); } });
+$('reroll').addEventListener('click', () => { seed = (Math.random() * 2 ** 31) | 0; render(); });
+$('print').addEventListener('click', () => window.print());
+addEventListener('resize', fit);
+setType('math');
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+</script>
+</body>
+</html>
